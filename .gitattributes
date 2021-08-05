@@ -1,0 +1,42 @@
+# UE file types
+*.uasset filter=lfs diff=lfs merge=lfs -text
+*.umap filter=lfs diff=lfs merge=lfs -text
+# Raw Content types
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.3ds filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.xcf filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+# Manually tracked LFS old files
+PaintGame/Content/Environment/Kitchen/Materials/Glass.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Buildings/Materials/M_Brick_Ground.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Buildings/Textures/FloorTiles/T_Floor_Mix.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/MainMenu/Option/WBP_Warning_BindKey.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Weapons/Landmine/Landmine.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Weapons/Landmine/Landmine_Skeleton.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Characters_New/Doug/BP_BubbleShield.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/GASShooter/Characters/Hero/Abilities/Doug/BP_StackableCube.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/GASShooter/Characters/Hero/Abilities/Doug/GA_EnergizeCubes.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/GASShooter/Characters/Hero/Abilities/Doug/GA_SpawnStackableCube.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Effects/ShieldHexMaterial/Test1/M_ShieldHex2_Inst1.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/MainMenu/Profile/WBP_Moments.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Buildings/Meshes/Kevin/SM_GuardRail_Curved.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Buildings/Textures/PaintedLines/RoadMarkings_OpacityMask.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/MainMenu/MenuGraphics/MapSelection/characterSelection_text.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Props/Textures/T_InteriorPropSet_Mix_03.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Buildings/Meshes/Kevin/SM_CrossWalk.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Buildings/Meshes/Kevin/Sidewalk_OuterCorner.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Buildings/Meshes/Kevin/Sidewalk_Ramp.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Buildings/Textures/Decals/Stop/MI_StopMark_Decal.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Buildings/Textures/PaintedLines/MI_RoadMarking_Inst.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/MainMenu/customeToolTip.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Props/Meshes/trash.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Environment/Buildings/Meshes/Jack/BuildingProps_03/SM_Drain_01.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Effects/X-Ray/MaterialFunctions/Noise.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Effects/X-Ray/MaterialFunctions/PulseGradient.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Effects/PFX_MuzzleFlash/P_WaterMuzzleFlash.uasset filter=lfs diff=lfs merge=lfs -text
+PaintGame/Content/Weapons/Pistol/Pistol_Skeleton.uasset filter=lfs diff=lfs merge=lfs -text
