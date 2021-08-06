@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayAbilities/Public/GameplayEffectTypes.h"
 #include "Components/ActorComponent.h"
 #include "ElementStackListener.generated.h"
 
+class UGameplayAbility;
+class UGameplayEffect;
 class UAsyncTaskGameplayEffectChange;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GASSHOOTER_API UElementStackListener : public UActorComponent
@@ -33,12 +36,14 @@ public:
 
 	// Sets default values for this component's properties
 	UElementStackListener();
-
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	
 	UFUNCTION()
 	void OnChillStack(FGameplayTag EffectGameplayTag, FActiveGameplayEffectHandle Handle, int32 NewStackCount, int32 OldStackCount);
+	
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

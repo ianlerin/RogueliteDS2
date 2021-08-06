@@ -44,7 +44,7 @@ void UElementStackListener::BeginPlay()
 			if (ChillHandler)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("UElementStackListener::BeginPlay, setup listener"));
-				ChillHandler->OnGameplayEffectStackChange.AddDynamic(this, &UElementStackListener::OnChillStack);
+				//ChillHandler->OnGameplayEffectStackChange.AddDynamic(this, &UElementStackListener::OnChillStack);
 			}
 		}
 	}
