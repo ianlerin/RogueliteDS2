@@ -20,10 +20,19 @@ void UAICaptainPreAttack::OnTransition()
 			LeapInstance->OnAbilityEndedDelegate.AddDynamic(this, &UAICaptainPreAttack::OnLeapEnd);
 		}
 	}
+	else
+	{
+		TransitionState(EAIState::EAS_Follow);
+	}
 }
 
 void UAICaptainPreAttack::OnLeapEnd()
 {
+	UGSGameplayAbility* LeapInstance = UGSBlueprintFunctionLibrary::GetPrimaryAbilityInstanceFromClass(GSAbilityComp, LeapAbility);
+	if (LeapInstance)
+	{
+		LeapInstance->OnAbilityEndedDelegate.RemoveAll(this);
+	}
 	bool bActivate=GSAbilityComp->TryActivateAbilityByClass(SlamDownAbility);
 	UE_LOG(LogTemp, Warning, TEXT(" UAICaptainPreAttack::OnLeapEnd, activate slam:%i"), bActivate);
 	if (!bActivate)
