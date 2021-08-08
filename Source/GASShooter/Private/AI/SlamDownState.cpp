@@ -2,6 +2,8 @@
 
 
 #include "AI/SlamDownState.h"
+#include "Characters/Abilities/GSGameplayAbility.h"
+#include "GSBlueprintFunctionLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h"
 #include "AI/GSHeroAIController.h"
 
@@ -34,11 +36,17 @@ void USlamDownState::SetStage(ESlamDownState StateToSet)
 		UE_LOG(LogTemp, Warning, TEXT(" USlamDownState::SetStage, end"));
 		MyPawn->GetWorldTimerManager().ClearTimer(GroundCheckHandler);
 	}
+	if (StateToSet == ESlamDownState::ESDS_None)
+	{
+		
+		UE_LOG(LogTemp, Warning, TEXT(" USlamDownState::SetStage, none"));
+	}
 }
 
 void USlamDownState::OnStateEnd()
 {
 	UE_LOG(LogTemp, Warning, TEXT(" USlamDownState::OnStateEnd"));
+	SetStage(ESlamDownState::ESDS_None);
 	TransitionState(EAIState::EAS_Idle);
 }
 
@@ -70,11 +78,12 @@ void USlamDownState::CheckGround()
 	{
 		if (SlamDownState == ESlamDownState::ESDS_Loop)
 		{
-			UE_LOG(LogTemp, Warning, TEXT(" USlamDownState::CheckGround:%s"), *Res.Actor->GetName());
+			UE_LOG(LogTemp, Warning, TEXT(" USlamDownState::CheckGround loop"), *Res.Actor->GetName());
 			SetStage(ESlamDownState::ESDS_End);
 		}
 		else
 		{
+			UE_LOG(LogTemp, Warning, TEXT(" USlamDownState::CheckGround not loop"), *Res.Actor->GetName());
 			OnStateEnd();
 		}
 	
