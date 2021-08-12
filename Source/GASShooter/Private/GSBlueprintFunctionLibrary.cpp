@@ -459,7 +459,20 @@ FCastExtraData UGSBlueprintFunctionLibrary::GetCasterMontage(TSubclassOf<UGamepl
 
 				if (Data->DataCollection.Contains(CurrentWeapon->GetWeaponType()))
 				{
+
 					return Data->DataCollection[CurrentWeapon->GetWeaponType()];
+				}
+				else
+				{
+					//If the weapon is not set in DT, will play the default anim instead
+
+					if (Data->DataCollection.Contains(EWeaponType::EWT_UnArmed))
+					{
+						//Alex, 12 Aug - Debug for default enum for DT_CastAnim
+						UE_LOG(LogTemp, Warning, TEXT("Alex: default anim"));
+
+						return Data->DataCollection[EWeaponType::EWT_UnArmed];
+					}
 				}
 			}
 			else
@@ -472,6 +485,9 @@ FCastExtraData UGSBlueprintFunctionLibrary::GetCasterMontage(TSubclassOf<UGamepl
 			}
 		}
 	}
+
+	//Alex, 12 Aug - Debug for default enum for DT_CastAnim
+	UE_LOG(LogTemp, Error, TEXT("return ExtraData;"));
 
 	FCastExtraData ExtraData;
 	return ExtraData;
