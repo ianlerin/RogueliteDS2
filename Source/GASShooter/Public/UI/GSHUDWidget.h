@@ -37,6 +37,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void StopInteractionTimer();
 
+	//Alex, 14 Aug 2021
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void ToggleSkillWindowFromVS();
+
 
 	/**
 	* Weapon info

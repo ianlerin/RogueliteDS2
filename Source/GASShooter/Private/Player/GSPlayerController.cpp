@@ -299,3 +299,12 @@ ETeamAttitude::Type AGSPlayerController::GetAttitudeTowardsActor(AActor* Actor)
 
 	return ETeamAttitude::Hostile;
 }
+
+void AGSPlayerController::ToggleSkillWindow()
+{
+	if (UIHUDWidget)
+	{
+		UIHUDWidget->ToggleSkillWindowFromVS();
+		UE_LOG(LogTemp, Error, TEXT("PC - Toggle Skill Window"));
+	}
+}

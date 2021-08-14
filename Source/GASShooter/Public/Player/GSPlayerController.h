@@ -27,6 +27,8 @@ public:
 
 	class UGSHUDWidget* GetGSHUD();
 
+	//Alex, 14 Aug 2021
+	void ToggleSkillWindow();
 
 	virtual void BeginPlay() override;
 	/**

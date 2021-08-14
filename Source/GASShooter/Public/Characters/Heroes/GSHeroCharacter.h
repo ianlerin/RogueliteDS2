@@ -355,6 +355,9 @@ protected:
 	// Sets the perspective
 	void SetPerspective(bool Is1PPerspective);
 
+	//Alex, 14 Aug 2021 - Sets toggle skill window UI action
+	void ToggleSkillWindow();
+
 	// Creates and initializes the floating status bar for heroes.
 	// Safe to call many times because it checks to make sure it only executes once.
 	UFUNCTION()

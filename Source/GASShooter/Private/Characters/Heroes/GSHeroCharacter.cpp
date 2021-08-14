@@ -146,6 +146,9 @@ void AGSHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("SecondaryFire", IE_Pressed, this, &AGSHeroCharacter::OnSecondaryActionPressed<true>);
 	PlayerInputComponent->BindAction("SecondaryFire", IE_Released, this, &AGSHeroCharacter::OnSecondaryActionPressed<false>);
 	
+	
+	PlayerInputComponent->BindAction("ToggleSkillWindow", IE_Pressed, this, &AGSHeroCharacter::ToggleSkillWindow);
+
 
 	// Bind player input to the AbilitySystemComponent. Also called in OnRep_PlayerState because of a potential race condition.
 	BindASCInput();
@@ -1461,4 +1464,16 @@ UAnimSequence* AGSHeroCharacter::GetBlockingAnim()
 		return CurrentWeapon->BlockingAnim;
 	}
 	return nullptr;
+}
+
+
+void AGSHeroCharacter::ToggleSkillWindow()
+{
+	AGSPlayerController* PC = GetController<AGSPlayerController>();
+	if (PC)
+	{
+		PC->ToggleSkillWindow();
+		UE_LOG(LogTemp, Error, TEXT("Hero - Toggle Skill Window"));
+	}
+
 }
