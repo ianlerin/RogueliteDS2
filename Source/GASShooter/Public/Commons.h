@@ -12,6 +12,7 @@
 class UAIBaseState;
 class UGameplayEffect;
 class UAnimMontage;
+class UGameplayAbility;
 class AGSWeapon;
 class USoundCue;
 /**
