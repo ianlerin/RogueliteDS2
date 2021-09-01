@@ -48,6 +48,7 @@ void UAIAttackState::OnExitState()
 
 void UAIAttackState::OnNextCombo()
 {
+	UE_LOG(LogTemp, Warning, TEXT("UAIAttackState::OnNextCombo"));
 	UGSGameplayAbility* AttackAbilityInstance = UGSBlueprintFunctionLibrary::GetPrimaryAbilityInstanceFromClass(GSAbilityComp, AttackAbility);
 	if (AttackAbilityInstance)
 	{
@@ -55,7 +56,7 @@ void UAIAttackState::OnNextCombo()
 	}
 }
 
-void UAIAttackState::OnAttackEnd()
+void UAIAttackState::OnAttackEnd(bool bWasCancelled)
 {
 	UE_LOG(LogTemp, Warning, TEXT("UAIAttackState::OnAttackEnd"));
 	TransitionState(EAIState::EAS_PreAttack);

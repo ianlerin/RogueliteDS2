@@ -90,7 +90,8 @@ public:
 	/**
 	* Getters for attributes from GSAttributeSetBase
 	**/
-
+	UFUNCTION(BlueprintCallable)
+	bool IsStaminaRegenOnCD()const;
 	UFUNCTION(BlueprintCallable, Category = "GASShooter|GSCharacter|Attributes")
 	int32 GetCharacterLevel() const;
 
@@ -164,10 +165,6 @@ protected:
 	// Reference to the ASC. It will live on the PlayerState or here if the character doesn't have a PlayerState.
 	UPROPERTY()
 	class UGSAbilitySystemComponent* AbilitySystemComponent;
-
-	// Reference to the AttributeSetBase. It will live on the PlayerState or here if the character doesn't have a PlayerState.
-	UPROPERTY()
-	class UGSAttributeSetBase* AttributeSetBase;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GASShooter|GSCharacter")
 	FText CharacterName;
@@ -250,4 +247,7 @@ public:
 	{
 		return ElementStackListener;
 	}
+	 // Reference to the AttributeSetBase. It will live on the PlayerState or here if the character doesn't have a PlayerState.
+	 UPROPERTY()
+	 class UGSAttributeSetBase* AttributeSetBase;
 };

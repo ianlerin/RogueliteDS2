@@ -25,11 +25,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float MaxAimTime = 5;
 	UPROPERTY(EditDefaultsOnly)
+	float AdditionalYaw = 20;
+	UPROPERTY(EditDefaultsOnly)
 	float MaxArrowDistance = 1500;
 	void OnRestartArrow();
 	virtual void OnExitState() override;
-
-	virtual void OnStateEnd() override;
+	UPROPERTY(EditDefaultsOnly)
+	float MinStaminaToAttack = 60;
+	virtual void OnBowAttackEnd(bool bWasCancelled) override;
 	virtual void OnEnterState() override;
 	UFUNCTION()
 	void AdjustRotation();

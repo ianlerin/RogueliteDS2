@@ -15,6 +15,7 @@ UGSAT_WaitChangeFOV::UGSAT_WaitChangeFOV(const FObjectInitializer& ObjectInitial
 
 UGSAT_WaitChangeFOV* UGSAT_WaitChangeFOV::WaitChangeFOV(UGameplayAbility* OwningAbility, FName TaskInstanceName, class UCameraComponent* CameraComponent, float TargetFOV, float Duration, UCurveFloat* OptionalInterpolationCurve)
 {
+	UE_LOG(LogTemp, Warning, TEXT("UGSAT_WaitChangeFOV::WaitChangeFOV,TargetFOV:%f"), TargetFOV);
 	UGSAT_WaitChangeFOV* MyObj = NewAbilityTask<UGSAT_WaitChangeFOV>(OwningAbility, TaskInstanceName);
 
 	MyObj->CameraComponent = CameraComponent;
@@ -38,8 +39,10 @@ void UGSAT_WaitChangeFOV::Activate()
 
 void UGSAT_WaitChangeFOV::TickTask(float DeltaTime)
 {
+	//UE_LOG(LogTemp, Warning, TEXT("UGSAT_WaitChangeFOV::TickTask"));
 	if (bIsFinished)
 	{
+		//UE_LOG(LogTemp, Warning, TEXT("UGSAT_WaitChangeFOV::TickTask,bIsFinished"));
 		return;
 	}
 
@@ -53,10 +56,12 @@ void UGSAT_WaitChangeFOV::TickTask(float DeltaTime)
 		{
 			bIsFinished = true;
 
+			//UE_LOG(LogTemp, Warning, TEXT("UGSAT_WaitChangeFOV::TargetFOV:%f"), TargetFOV);
 			CameraComponent->SetFieldOfView(TargetFOV);
 			
 			if (ShouldBroadcastAbilityTaskDelegates())
 			{
+				//UE_LOG(LogTemp, Warning, TEXT("UGSAT_WaitChangeFOV::OnTargetFOVReached"));
 				OnTargetFOVReached.Broadcast();
 			}
 			EndTask();
@@ -73,6 +78,7 @@ void UGSAT_WaitChangeFOV::TickTask(float DeltaTime)
 
 			NewFOV = FMath::Lerp<float, float>(StartFOV, TargetFOV, MoveFraction);
 
+			//UE_LOG(LogTemp, Warning, TEXT("UGSAT_WaitChangeFOV::NewFOV:%f"), NewFOV);
 			CameraComponent->SetFieldOfView(NewFOV);
 		}
 	}

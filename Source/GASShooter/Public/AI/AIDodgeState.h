@@ -22,7 +22,7 @@ protected:
 	FGameplayAbilitySpecHandle DodgeHandle;
 protected:
 	UFUNCTION()
-	void OnDodgeEnd();
+	void OnDodgeEnd(bool bWasCancelled);
 
 	virtual void OnExitState()override;
 	virtual void OnEnterState()override;

@@ -19,13 +19,11 @@ class GASSHOOTER_API UAIAttackState : public UAIBaseState
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<UGameplayAbility>AttackAbility;
-	UPROPERTY()
-	FGameplayAbilitySpecHandle AttackHandle;
 protected:
 	virtual void OnExitState()override;
 	virtual void OnEnterState()override;
 	UFUNCTION()
 	void OnNextCombo();
 	UFUNCTION()
-	void OnAttackEnd();
+	void OnAttackEnd(bool bWasCancelled);
 };

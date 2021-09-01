@@ -33,6 +33,8 @@ void UAICaptainPreAttack::OnTransition()
 bool UAICaptainPreAttack::CheckLeapCondition()
 {
 	AActor* FocusedActor = MyGSController->GetFocusActor();
+	if (!FocusedActor) { return false; }
+	if (!CharBase) { return false; }
 	// at least a certain range from character
 	float Distance = FVector::Dist(FocusedActor->GetActorLocation(), CharBase->GetActorLocation());
 	bool bLargerThanMinDistance = Distance < MinDistanceToLeap;

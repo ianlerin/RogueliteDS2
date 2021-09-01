@@ -2,7 +2,8 @@
 
 
 #include "AI/CastState.h"
-
+#include "Characters/Abilities/GSAbilitySystemComponent.h"
+#include "Characters/Abilities/AsyncTaskGameplayTagAddedRemoved.h"
 void UCastState::OnEnterState()
 {
 	Super::OnEnterState();

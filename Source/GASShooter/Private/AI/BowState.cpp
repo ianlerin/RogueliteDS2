@@ -19,7 +19,7 @@ void UBowState::OnEnterState()
 	UGSGameplayAbility* AttackAbilityInstance = UGSBlueprintFunctionLibrary::GetPrimaryAbilityInstanceFromClass(GSAbilityComp, AttackAbility);
 	if (AttackAbilityInstance)
 	{
-		AttackAbilityInstance->OnAbilityEndedDelegate.AddDynamic(this, &UBowState::OnStateEnd);
+		AttackAbilityInstance->OnAbilityEndedDelegate.AddDynamic(this, &UBowState::OnBowAttackEnd);
 	}
 	APlayerCameraManager* Manager = UGameplayStatics::GetPlayerCameraManager(this, 0);
 	if (Manager&&MyPlayerController)
@@ -49,11 +49,11 @@ void UBowState::OnExitState()
 	}
 }
 
-void UBowState::OnStateEnd()
+void UBowState::OnBowAttackEnd(bool bWasCancelled)
 {
-	UE_LOG(LogTemp, Warning, TEXT(" UBowState::OnStateEnd"));
 	TransitionState(EAIState::EAS_Idle);
 }
+
 
 void UBowState::OnStageChange()
 {

@@ -2,6 +2,8 @@
 
 
 #include "AI/SwordChargeState.h"
+#include "Characters/Abilities/GSGameplayAbility.h"
+#include "GSBlueprintFunctionLibrary.h"
 
 void USwordChargeState::OnEnterState()
 {
@@ -22,7 +24,7 @@ void USwordChargeState::SetStage(ESwordChargeState StateToSet)
 	OnChargeStateTransitionDelegate.Broadcast(StateToSet);
 }
 
-void USwordChargeState::OnStateEnd()
+void USwordChargeState::OnStateEnd(bool bWasCancelled)
 {
 	UE_LOG(LogTemp, Warning, TEXT(" USwordChargeState::OnStateEnd"));
 	TransitionState(EAIState::EAS_Idle);

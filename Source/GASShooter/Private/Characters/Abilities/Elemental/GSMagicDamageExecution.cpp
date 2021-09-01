@@ -3,6 +3,7 @@
 
 #include "Characters/Abilities/Elemental/GSMagicDamageExecution.h"
 #include "Characters/Heroes/GSHeroCharacter.h"
+#include "Characters/Abilities/AttributeSets/GSAttributeSetBase.h"
 #include "Characters/Abilities/GSAbilitySystemComponent.h"
 
 struct GSMagicDamageStatics

@@ -2,6 +2,7 @@
 
 
 #include "AI/UAIIdleState.h"
+#include "Characters/Heroes/GSHeroCharacter.h"
 #include "TimerManager.h"
 #include "AI/GSHeroAIController.h"
 
@@ -32,16 +33,21 @@ void UUAIIdleState::OnExitState()
 
 void UUAIIdleState::OnEnemyUpdate(APawn* EnemyPawn)
 {
+	AGSHeroCharacter* HeroEnemyPawn = Cast<AGSHeroCharacter>(EnemyPawn);
 	UE_LOG(LogTemp, Warning, TEXT("UUAIIdleState::OnEnemyUpdate"));
-	if (!EnemyPawn)
+	if (!HeroEnemyPawn)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("UUAIIdleState::OnEnemyUpdate, no enemy"));
 		return;
 	}
-	else
+	else if (HeroEnemyPawn->IsAlive())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("UUAIIdleState::OnEnemyUpdate, pre attack"));
 		TransitionState(EAIState::EAS_PreAttack);
+	}
+	else
+	{
+		return;
 	}
 }
 

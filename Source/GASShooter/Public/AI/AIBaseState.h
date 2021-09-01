@@ -44,7 +44,12 @@ protected:
 	class UAsyncTaskGameplayTagAddedRemoved* RollListenTask = nullptr;
 	UPROPERTY()
 	class UAsyncTaskGameplayTagAddedRemoved* CastListenTask = nullptr;
-	//sometimes state need a cooldown for AI to check
+	UPROPERTY()
+	class UAsyncTaskAttributeChanged* AttributeChangeListener;
+
+	UPROPERTY(EditDefaultsOnly)
+	FGameplayAttribute StaminaAttribute;
+	//sometimes state need a cooldown for AI to check*should perhaps replace this with skill cooldown"
 	FTimerHandle StateCDHandle;
 	bool bActive = false;
 public:
@@ -71,4 +76,6 @@ protected:
 	bool bCheckValidAttackCondition();
 	UFUNCTION()
 	void OnDeath(AGSCharacterBase* Died);
+	UFUNCTION()
+	virtual void OnStaminaChange(FGameplayAttribute Attribute, float NewValue, float OldValue);
 };

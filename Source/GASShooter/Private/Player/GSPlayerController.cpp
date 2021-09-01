@@ -299,3 +299,4 @@ ETeamAttitude::Type AGSPlayerController::GetAttitudeTowardsActor(AActor* Actor)
 
 	return ETeamAttitude::Hostile;
 }
+

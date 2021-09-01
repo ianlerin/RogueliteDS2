@@ -30,7 +30,7 @@ void UAIDodgeState::OnExitState()
 	}
 }
 
-void UAIDodgeState::OnDodgeEnd()
+void UAIDodgeState::OnDodgeEnd(bool bWasCancelled)
 {
 	TransitionState(EAIState::EAS_Idle);
 }

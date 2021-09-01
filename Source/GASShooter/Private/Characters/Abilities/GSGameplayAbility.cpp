@@ -155,7 +155,7 @@ void UGSGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, con
 {
 	UE_LOG(LogTemp, Warning, TEXT("UGSGameplayAbility::EndAbility:%s"),*GetName());
 	Super::EndAbility( Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-	OnAbilityEndedDelegate.Broadcast();
+	OnAbilityEndedDelegate.Broadcast(bWasCancelled);
 	switch (ElementType)
 	{
 	case(EElementalType::Fire):
@@ -170,6 +170,7 @@ void UGSGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, con
 
 void UGSGameplayAbility::OnNextComboAvailable()
 {
+	UE_LOG(LogTemp, Warning, TEXT("UGSGameplayAbility::OnNextComboAvailable"));
 	OnNextComboDelegate.Broadcast();
 }
 
@@ -224,6 +225,10 @@ bool UGSGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Han
 
 bool UGSGameplayAbility::CheckCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, OUT FGameplayTagContainer* OptionalRelevantTags) const
 {
+	if (bIgnoreCost)
+	{
+		return true;
+	}
 	return Super::CheckCost(Handle, ActorInfo, OptionalRelevantTags) && GSCheckCost(Handle, *ActorInfo);
 }
 

@@ -3,6 +3,7 @@
 
 #include "AI/AIFollowState.h"
 #include "Characters/GSCharacterBase.h"
+#include "GSBlueprintFunctionLibrary.h"
 #include "Runtime/Engine/Classes/GameFramework/PawnMovementComponent.h"
 #include "AI/GSHeroAIController.h"
 
@@ -21,7 +22,7 @@ void UAIFollowState::OnExitState()
 void UAIFollowState::OnEnterState()
 {
 	Super::OnEnterState();
-	MyGSController->SetFocus(MyGSController->EnemyDetected);
+	//MyGSController->SetFocus(MyGSController->EnemyDetected);
 	UE_LOG(LogTemp, Warning, TEXT("UAIFollowState::OnEnterState"));
 	if (MyGSController)
 	{

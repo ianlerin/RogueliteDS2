@@ -84,6 +84,13 @@ bool AGSHeroAIController::CheckIfEnemyInSight()
 	return PerceivedActors.Find(EnemyDetected) >= 0;
 }
 
+
+void AGSHeroAIController::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	AIStateHandler->DestroyAllStates();
+	Super::EndPlay(EndPlayReason);
+}
+
 /*
 ETeamAttitude::Type AGSHeroAIController::GetTeamAttitudeTowards(const AActor& Other) const
 {

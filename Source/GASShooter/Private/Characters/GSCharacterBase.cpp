@@ -7,6 +7,7 @@
 #include "Characters/Abilities/GSAbilitySystemGlobals.h"
 #include "GSBlueprintFunctionLibrary.h"
 #include "Characters/Abilities/GSGameplayAbility.h"
+#include "AI/AIStateHandlerComponent.h"
 #include "Characters/Component/ElementStackListener.h"
 #include "Characters/GSCharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -384,7 +385,6 @@ void AGSCharacterBase::InitializeAttributes()
 	// Can run on Server and Client
 	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
 	EffectContext.AddSourceObject(this);
-
 	FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes, GetCharacterLevel(), EffectContext);
 	if (NewHandle.IsValid())
 	{
@@ -456,6 +456,15 @@ void AGSCharacterBase::SetStamina(float Stamina)
 	}
 
 	OnStaminaChangeDelegate.Broadcast();
+}
+
+bool AGSCharacterBase::IsStaminaRegenOnCD() const
+{
+	if (IsValid(AttributeSetBase))
+	{
+		return AttributeSetBase->IsStaminaCDOnRegen();
+	}
+	return false;
 }
 
 void AGSCharacterBase::SetShield(float Shield)
