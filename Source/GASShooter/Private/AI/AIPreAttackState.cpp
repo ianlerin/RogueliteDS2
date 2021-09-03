@@ -1,7 +1,10 @@
 // Copyright 2020 Dan Kestranek.
 
 #include "AI/AIPreAttackState.h"
-#include "AI/GSHeroAIController.h"	
+#include "AI/GSHeroAIController.h"
+#include "Characters/GSCharacterBase.h"
+#include "Characters/Abilities/GSAbilitySystemComponent.h"
+#include "Characters/Abilities/AsyncTaskAttributeChanged.h"
 #include "Characters/Abilities/AsyncTaskGameplayEffectChange.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -32,26 +35,40 @@ void UAIPreAttackState::OnEnterState()
 	UE_LOG(LogTemp, Warning, TEXT("UAIPreAttackState::OnEnterState, Enemy:%s"),*MyGSController->EnemyDetected->GetName());
 	MyGSController->SetFocus(MyGSController->EnemyDetected);
 	//StartSmoothRotation();
-
-	MoveToRandLocationAroundRange();
-	
-	FTimerDelegate LocRestartDelegate;
-	LocRestartDelegate.BindUFunction(this, "MoveToRandLocationAroundRange");
-	FTimerDelegate DistanceCheckDelegate;
-
-	DistanceCheckDelegate.BindUFunction(this, "CheckDistance");
-	MyGSController->GetWorldTimerManager().SetTimer(DistanceCheckHandler, DistanceCheckDelegate, 0.25, true);
-	MyGSController->GetWorldTimerManager().SetTimer(LocRestartHandler, LocRestartDelegate, RestartRandomMovementTimer, true);
-
-	SpawnedDamageEffectListener = UAsyncTaskGameplayEffectChange::ListenForGameplayEffectStackChange(GSAbilityComp, FGameplayTag::RequestGameplayTag("Event.DamageCount"));
-	if (SpawnedDamageEffectListener)
+	if(!CharBase)
 	{
-		SpawnedDamageEffectListener->OnGameplayEffectStackChange.AddDynamic(this, &UAIBaseState::OnDamageStackChange);
+		OnTransition();
 	}
+	if (CharBase->GetStamina() >= MinStaminaToAttack)
+	{
+		OnTransition();
+	}
+	else
+	{
+		MoveToRandLocationAroundRange();
+
+		FTimerDelegate LocRestartDelegate;
+		LocRestartDelegate.BindUFunction(this, "MoveToRandLocationAroundRange");
+		FTimerDelegate DistanceCheckDelegate;
+
+		DistanceCheckDelegate.BindUFunction(this, "CheckDistance");
+		MyGSController->GetWorldTimerManager().SetTimer(DistanceCheckHandler, DistanceCheckDelegate, 0.25, true);
+		MyGSController->GetWorldTimerManager().SetTimer(LocRestartHandler, LocRestartDelegate, RestartRandomMovementTimer, true);
+		/*
+		SpawnedDamageEffectListener = UAsyncTaskGameplayEffectChange::ListenForGameplayEffectStackChange(GSAbilityComp, FGameplayTag::RequestGameplayTag("Event.DamageCount"));
+		if (SpawnedDamageEffectListener)
+		{
+			SpawnedDamageEffectListener->OnGameplayEffectStackChange.AddDynamic(this, &UAIBaseState::OnDamageStackChange);
+		}
+		*/
+	}
+
+	
 }
 
 void UAIPreAttackState::OnDamageStackChange(FGameplayTag EffectGameplayTag, FActiveGameplayEffectHandle Handle, int32 NewStackCount, int32 OldStackCount)
 {
+	/*
 	if (OldStackCount > NewStackCount) { return; }
 	RotCount++;
 	if (RotCount > CurrentRandomMoveRequired)
@@ -65,12 +82,21 @@ void UAIPreAttackState::OnDamageStackChange(FGameplayTag EffectGameplayTag, FAct
 		UE_LOG(LogTemp, Warning, TEXT("UAIPreAttackState::MoveToRandLocationAroundRange,transition to follow"));
 		OnTransition();
 	}
+	*/
 }
 
 void UAIPreAttackState::OnTransition()
 {
 	UE_LOG(LogTemp, Warning, TEXT("UAIPreAttackState::OnTransition"));
-	TransitionState(EAIState::EAS_Follow);
+	if (CharBase)
+	{
+		TransitionState(EAIState::EAS_Follow);
+	}
+	else
+	{
+
+		TransitionState(EAIState::EAS_Idle);
+	}
 }
 
 void UAIPreAttackState::MoveToRandLocationAroundRange()
@@ -80,7 +106,7 @@ void UAIPreAttackState::MoveToRandLocationAroundRange()
 	{
 		RotCount = 0;
 		UE_LOG(LogTemp, Warning, TEXT("UAIPreAttackState::MoveToRandLocationAroundRange,transition to follow"));
-		OnTransition();
+		//OnTransition();
 	}
 	else
 	{
@@ -114,5 +140,15 @@ void UAIPreAttackState::CheckDistance()
 	if (DiffVec.Size() >= MinDistance)
 	{
 		MoveToRandLocationAroundRange();
+	}
+}
+
+void UAIPreAttackState::OnStaminaChange(FGameplayAttribute Attribute, float NewValue, float OldValue)
+{
+	Super::OnStaminaChange(Attribute, NewValue, OldValue);
+	UE_LOG(LogTemp, Warning, TEXT("UAIPreAttackState::OnStaminaChange, new val:%f"), NewValue);
+	if (NewValue >= MinStaminaToAttack)
+	{
+		OnTransition();
 	}
 }

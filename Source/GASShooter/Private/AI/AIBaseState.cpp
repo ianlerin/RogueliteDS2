@@ -2,11 +2,13 @@
 
 #include "AI/AIBaseState.h"
 #include "AI/GSHeroAIController.h"
+#include "Characters/Abilities/AttributeSets/GSAttributeSetBase.h"
 #include "Characters/Abilities/AsyncTaskGameplayEffectChange.h"
 #include "GSBlueprintFunctionLibrary.h"
 #include "Player/GSPlayerController.h"
 #include "Characters/GSCharacterBase.h"
 #include "AbilitySystemComponent.h"
+#include "Characters/Abilities/AsyncTaskAttributeChanged.h"
 #include "Characters/Abilities/AsyncTaskGameplayTagAddedRemoved.h"
 #include "Characters/Abilities/GSAbilitySystemComponent.h"
 #include "GameplayAbilities/Public/AbilitySystemBlueprintLibrary.h"
@@ -66,6 +68,12 @@ void UAIBaseState::OnEnterState()
 	{
 		CharBase->GetWorldTimerManager().SetTimer(StateCDHandle, StateCDDuration, false);
 	}
+	auto AttributeToListen =CharBase->AttributeSetBase->GetStaminaAttribute();
+	AttributeChangeListener = UAsyncTaskAttributeChanged::ListenForAttributeChange(GSAbilityComp, AttributeToListen);
+	if (AttributeChangeListener)
+	{
+		AttributeChangeListener->OnAttributeChanged.AddDynamic(this, &UAIBaseState::OnStaminaChange);
+	}
 }
 
 void UAIBaseState::OnExitState()
@@ -84,6 +92,7 @@ void UAIBaseState::OnExitState()
 			GameplayTagListenTask->OnTagAdded.RemoveAll(this);
 
 			GameplayTagListenTask->OnTagRemoved.RemoveAll(this);
+			AttributeChangeListener->EndTask();
 			RollListenTask->EndTask();
 			CastListenTask->EndTask();
 			UE_LOG(LogTemp, Warning, TEXT(" UAIBaseState::OnExitState, end task"));
@@ -206,4 +215,9 @@ bool UAIBaseState::GetIsOnTimer()
 		return CharBase->GetWorldTimerManager().IsTimerActive(StateCDHandle);
 	}
 	return false;
+}
+
+void UAIBaseState::OnStaminaChange(FGameplayAttribute Attribute, float NewValue, float OldValue)
+{
+
 }

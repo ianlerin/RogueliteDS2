@@ -21,20 +21,22 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<UGameplayAbility>AttackAbility;
-	UPROPERTY()
-	FGameplayAbilitySpecHandle AttackHandle;
 	virtual void OnEnterState() override;
 	virtual void OnExitState() override;
-	UFUNCTION()
-	virtual void OnStateEnd();
 	UPROPERTY(BlueprintAssignable)
 	FOnBowAimTransition OnBowAimTransitionDelegate;
 	UPROPERTY(BlueprintReadWrite)
 	AGSArrow* GSArrow = nullptr;
+
+protected:
+	UFUNCTION()
+	virtual void OnBowAttackEnd(bool bWasCancelled);
+
 public:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	EBowDrawState BowDrawState = EBowDrawState::EBDS_None;
-	
+
+
 	float MaxBowPitch = 40;
 	float MinBowPitch = -40;
 
@@ -46,4 +48,5 @@ public:
 		OnBowAimTransitionDelegate.Broadcast(DrawStateToSet);
 		OnStageChange();
 	}
+
 };

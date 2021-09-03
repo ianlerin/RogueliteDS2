@@ -2,6 +2,9 @@
 
 
 #include "GSBlueprintFunctionLibrary.h"
+#include "Weapons/GSWeapon.h"
+#include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
+#include "Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h"
 #include "Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 #include "Component/InputHandlerComponent.h"
 #include "Characters/Heroes/GSHeroCharacter.h"
@@ -496,5 +499,8 @@ FCastExtraData UGSBlueprintFunctionLibrary::GetCasterMontage(TSubclassOf<UGamepl
 FVector UGSBlueprintFunctionLibrary::GetVelocityToReachTarget(FVector Start, FVector End, FVector Acceleration, float T)
 {
 	FVector Diff = End - Start;
-	return (Diff - 0.5*Acceleration*T*T) / T;
+	float XToUse = (Diff.X - 0.5*Acceleration.X*T*T) / T;
+	float YToUSe = (Diff.Y - 0.5*Acceleration.Y*T*T) / T;
+	float ZToUse = (Diff.Z - 0.5*Acceleration.Z*T*T) / T;
+	return FVector(XToUse, YToUSe, ZToUse);
 }

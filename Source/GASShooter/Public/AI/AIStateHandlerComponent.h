@@ -46,4 +46,6 @@ public:
 	ESlamDownState GetSlamDownState();
 	//should be mainly for AI
 	bool CheckStateCD(EAIState NewState);
+	//call during end play
+	void DestroyAllStates();
 };

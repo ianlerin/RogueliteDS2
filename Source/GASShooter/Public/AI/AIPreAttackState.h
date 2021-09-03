@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "AI/AIBaseState.h"
 #include "AIPreAttackState.generated.h"
-
+class UAsyncTaskAttributeChanged;
 class UAsyncTaskGameplayEffectChange;
 /**
  * 
@@ -40,10 +40,12 @@ protected:
 	UPROPERTY()
 	class UAsyncTaskGameplayEffectChange* SpawnedDamageEffectListener;
 	FTimerHandle LocRestartHandler;
-
 	virtual void OnTransition();
 	UFUNCTION()
 	virtual void CheckDistance();
 
+	virtual void OnStaminaChange(FGameplayAttribute Attribute, float NewValue, float OldValue) override;
+	UPROPERTY(EditDefaultsOnly)
+	float MinStaminaToAttack = 80;
 
 };

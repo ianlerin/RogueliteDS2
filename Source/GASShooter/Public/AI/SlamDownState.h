@@ -36,7 +36,7 @@ protected:
 	virtual void OnExitState() override;
 
 	UFUNCTION()
-	void OnStateEnd();
+	void OnStateEnd(bool bWasCancelled);
 	UFUNCTION()
 	void CheckGround();
 public:

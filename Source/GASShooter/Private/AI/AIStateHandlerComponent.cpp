@@ -57,6 +57,14 @@ void UAIStateHandlerComponent::ConstructStates()
 	}
 }
 
+void UAIStateHandlerComponent::DestroyAllStates()
+{
+	for (auto StateInfo : StateMapCollection)
+	{
+		StateInfo.Value->ConditionalBeginDestroy();
+	}
+}
+
 // Called every frame
 void UAIStateHandlerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

@@ -3,7 +3,10 @@
 
 #include "Characters/Abilities/GSBurnCalculation.h"
 #include "Characters/Heroes/GSHeroCharacter.h"
+#include "Characters/Abilities/Elemental/DeepBurnAbility.h"
 #include "GSBlueprintFunctionLibrary.h"
+#include "Characters/Component/ElementStackListener.h"
+#include "Characters/Abilities/AttributeSets/GSAttributeSetBase.h"
 #include "Characters/Abilities/GSAbilitySystemComponent.h"
 
 struct GSBurnDamageStatics

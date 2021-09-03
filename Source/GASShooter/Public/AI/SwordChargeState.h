@@ -31,7 +31,7 @@ protected:
 
 	virtual void OnExitState() override;
 	UFUNCTION()
-	void OnStateEnd();
+	void OnStateEnd(bool bWasCancelled);
 public:
 	ESwordChargeState GetChargeState()
 	{

@@ -43,7 +43,7 @@ void USlamDownState::SetStage(ESlamDownState StateToSet)
 	}
 }
 
-void USlamDownState::OnStateEnd()
+void USlamDownState::OnStateEnd(bool bWasCancelled)
 {
 	UE_LOG(LogTemp, Warning, TEXT(" USlamDownState::OnStateEnd"));
 	SetStage(ESlamDownState::ESDS_None);
@@ -84,7 +84,7 @@ void USlamDownState::CheckGround()
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT(" USlamDownState::CheckGround not loop"), *Res.Actor->GetName());
-			OnStateEnd();
+			OnStateEnd(false);
 		}
 	
 	}

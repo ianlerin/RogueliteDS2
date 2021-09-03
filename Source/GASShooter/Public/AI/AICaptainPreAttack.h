@@ -15,6 +15,8 @@ class GASSHOOTER_API UAICaptainPreAttack : public UAIPreAttackState
 {
 	GENERATED_BODY()
 protected:
+
+	bool CheckLeapCondition();
 	virtual void OnTransition() override;
 	UFUNCTION()
 	void OnLeapEnd();
@@ -23,7 +25,8 @@ protected:
 	TSubclassOf<UGSGameplayAbility> LeapAbility;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGSGameplayAbility> SlamDownAbility;
-
+	UPROPERTY(EditDefaultsOnly)
+	float MinDistanceToLeap	 = 500;
 	UFUNCTION()
 	virtual void OnExitState() override;
 };

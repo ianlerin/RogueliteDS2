@@ -2,9 +2,11 @@
 
 
 #include "AI/AIBowState.h"
+#include "Characters/GSCharacterBase.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "Characters/Abilities/GSGameplayAbility.h"
 #include "Weapons/GSArrow.h"
+#include "GSBlueprintFunctionLibrary.h"
 #include "Characters/Abilities/GSAbilitySystemComponent.h"
 #include "AI/GSHeroAIController.h"
 
@@ -75,16 +77,24 @@ void UAIBowState::StartFocusEnemy()
 	MyGSController->GetWorldTimerManager().SetTimer(AimHandler, AimDelegate, RandAimTime, false);
 	FTimerDelegate  AdjustRotationDelegate;
 	AdjustRotationDelegate.BindUFunction(this, "AdjustRotation");
-	//MyGSController->GetWorldTimerManager().SetTimer(AdjustRotationHandler, AdjustRotationDelegate, 0.1, true);
+	MyGSController->GetWorldTimerManager().SetTimer(AdjustRotationHandler, AdjustRotationDelegate, 0.1, true);
+	AdjustRotation();
 }
 
 
 void UAIBowState::AdjustRotation()
 {
+	
+	
+	//FRotator RotationToSet=UKismetMathLibrary::FindLookAtRotation(GSArrow->GetActorLocation(), MyGSController->EnemyDetected->GetActorLocation());
+	FRotator RotationToSet = UKismetMathLibrary::FindLookAtRotation(CharBase->GetActorLocation(), MyGSController->EnemyDetected->GetActorLocation());
+	MyGSController->SetControlRotation(RotationToSet);
+	RotationToSet.Yaw = RotationToSet.Yaw + AdditionalYaw;
+	CharBase->SetActorRotation(RotationToSet);
+	UE_LOG(LogTemp, Warning, TEXT("UAIBowState::MyGSController, aimrot:%s, control rot:%s"), *RotationToSet.ToString(), *MyGSController->GetControlRotation().ToString());
 	if (GSArrow)
 	{
-		FRotator RotationToSet=UKismetMathLibrary::FindLookAtRotation(GSArrow->GetActorLocation(), MyGSController->EnemyDetected->GetActorLocation());
-		MyGSController->SetControlRotation(RotationToSet);
+		
 	}
 
 }
@@ -127,8 +137,17 @@ void UAIBowState::ShootArrow()
 	}
 }
 
-void UAIBowState::OnStateEnd()
+void UAIBowState::OnBowAttackEnd(bool bWasCancelled)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UAIBowState::OnStateEnd"));
-	TransitionState(EAIState::EAS_PreAttack);
+	UE_LOG(LogTemp, Warning, TEXT("UAIBowState::OnBowAttackEnd"));
+	float Stamina = CharBase->GetStamina();
+	if (bWasCancelled&&Stamina< MinStaminaToAttack)
+	{
+		TransitionState(EAIState::EAS_PreAttack);
+	}
+	else
+	{
+		bool bActivate = GSAbilityComp->TryActivateAbilityByClass(AttackAbility);
+	}
 }
+

@@ -6,6 +6,7 @@
 #include "GameplayEffect.h"
 #include "Characters/Component/ElementStackListener.h"
 #include "GameplayEffectExtension.h"
+#include "TimerManager.h"
 #include "Net/UnrealNetwork.h"
 #include "Characters/Abilities/GSGameplayAbility.h"
 #include "Player/GSPlayerController.h"
@@ -206,8 +207,16 @@ void UGSAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCall
 	} // Mana
 	else if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
 	{
+	
 		// Handle stamina changes.
+	if (Data.EvaluatedData.Magnitude < 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT(" UGSAttributeSetBase::PostGameplayEffectExecute, stamina change:%f"), Data.EvaluatedData.Magnitude);
+		GetWorld()->GetTimerManager().SetTimer(StaminaCooldownTimer, StaminaRegenCooldown, false);
+
+	}
 		SetStamina(FMath::Clamp(GetStamina(), 0.0f, GetMaxStaminaAfterRestriction()));
+		
 	}
 	else if (Data.EvaluatedData.Attribute == GetShieldAttribute())
 	{
@@ -222,6 +231,12 @@ void UGSAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCall
 	{
 	UE_LOG(LogTemp, Warning, TEXT(" UGSAttributeSetBase::PostGameplayEffectExecute, bow:%f"), GetBowDrawRate());
 	}
+
+}
+
+bool UGSAttributeSetBase::IsStaminaCDOnRegen()
+{
+	return GetWorld()->GetTimerManager().IsTimerActive(StaminaCooldownTimer);
 }
 
 float UGSAttributeSetBase::RecalculateMaxManaAfterRestriction()

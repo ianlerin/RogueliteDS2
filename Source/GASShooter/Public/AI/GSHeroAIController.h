@@ -41,6 +41,8 @@ public:
 
 	bool CheckIfEnemyInSight();
 protected:
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	UFUNCTION()
 		void OnDamageStackChange(FGameplayTag EffectGameplayTag, FActiveGameplayEffectHandle Handle, int32 NewStackCount, int32 OldStackCount);
 	UPROPERTY()

@@ -34,7 +34,7 @@ public:
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNextComboAvailable);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAbilityEnded);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAbilityEnded, bool, bWasCancelled);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityLevelChange,int32, NewLevel, int32,OldLevel);
 /**
@@ -92,6 +92,9 @@ public:
 	// If true, only activate this ability if not interacting with something via GA_Interact.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Ability")
 	bool bCannotActivateWhileInteracting;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool bIgnoreCost = false;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Ability")
 	bool bDamageAlly = false;
@@ -175,7 +178,6 @@ public:
 	// Is the player's input currently pressed? Only works if the ability is bound to input.
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	virtual bool IsInputPressed() const;
-
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData);
 	UFUNCTION()
 	void OnActivateAbilityDelegate();

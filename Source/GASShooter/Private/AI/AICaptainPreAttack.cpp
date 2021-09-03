@@ -2,14 +2,18 @@
 
 
 #include "AI/AICaptainPreAttack.h"
+#include "Characters/GSCharacterBase.h"
 #include "GSBlueprintFunctionLibrary.h"
+#include "AI/GSHeroAIController.h"
 #include "AI/AIStateHandlerComponent.h"
 
 void UAICaptainPreAttack::OnTransition()
 {
 	UE_LOG(LogTemp, Warning, TEXT(" UAICaptainPreAttack::OnTransition"));
 	if (!MyHandler) { return; }
-	if (!MyHandler->CheckStateCD(EAIState::EAS_SlamDown))
+
+	
+	if (CheckLeapCondition())
 	{
 		bool bLeapSuccess=GSAbilityComp->TryActivateAbilityByClass(LeapAbility);
 
@@ -17,13 +21,28 @@ void UAICaptainPreAttack::OnTransition()
 		UGSGameplayAbility* LeapInstance = UGSBlueprintFunctionLibrary::GetPrimaryAbilityInstanceFromClass(GSAbilityComp, LeapAbility);
 		if (LeapInstance)
 		{
-			LeapInstance->OnAbilityEndedDelegate.AddDynamic(this, &UAICaptainPreAttack::OnLeapEnd);
+			//LeapInstance->OnAbilityEndedDelegate.AddDynamic(this, &UAICaptainPreAttack::OnLeapEnd);
 		}
 	}
 	else
 	{
 		TransitionState(EAIState::EAS_Follow);
 	}
+}
+
+bool UAICaptainPreAttack::CheckLeapCondition()
+{
+	AActor* FocusedActor = MyGSController->GetFocusActor();
+	if (!FocusedActor) { return false; }
+	if (!CharBase) { return false; }
+	// at least a certain range from character
+	float Distance = FVector::Dist(FocusedActor->GetActorLocation(), CharBase->GetActorLocation());
+	bool bLargerThanMinDistance = Distance < MinDistanceToLeap;
+	// at least higher than character
+	bool bIsHigherThanFocused = CharBase->GetActorLocation().Z > FocusedActor->GetActorLocation().Z;
+	// if not on cd
+	bool bIsOnCD = MyHandler->CheckStateCD(EAIState::EAS_SlamDown);
+	return bLargerThanMinDistance && bIsHigherThanFocused && !bIsOnCD;
 }
 
 void UAICaptainPreAttack::OnLeapEnd()
