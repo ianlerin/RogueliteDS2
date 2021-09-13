@@ -182,10 +182,14 @@ float AGSCharacterBase::GetMaxMana() const
 
 float AGSCharacterBase::GetStamina() const
 {
-	if (IsValid(AttributeSetBase))
+	if (AttributeSetBase)
 	{
-		return AttributeSetBase->GetStamina();
+		if (IsValid(AttributeSetBase))
+		{
+			return AttributeSetBase->GetStamina();
+		}
 	}
+
 
 	return 0.0f;
 }

@@ -246,9 +246,9 @@ void UGSBlueprintFunctionLibrary::CompareComboChain(TArray< FComboChainData> DTC
 	
 }
 
-EDirection UGSBlueprintFunctionLibrary::GetRollDirection(UDataTable* RollTable, EGSAbilityInputID PrimaryRollKey, AActor* AvatarActor)
+FGameplayTag UGSBlueprintFunctionLibrary::GetRollDirection(UDataTable* RollTable, EGSAbilityInputID PrimaryRollKey, AActor* AvatarActor)
 {
-	EDirection ToReturn = EDirection::ED_None;
+	FGameplayTag ToReturn;
 	TArray<FRollTable*>RollDataCollection;
 	AGSHeroCharacter* MyHero = Cast<AGSHeroCharacter>(AvatarActor);
 	if (!MyHero) { return ToReturn; }
@@ -263,17 +263,67 @@ EDirection UGSBlueprintFunctionLibrary::GetRollDirection(UDataTable* RollTable, 
 				if (PressedInput == Data->AdditionalInput)
 				{
 					//found perfect match
-					return Data->RollDirection;
+					return Data->RollTag;
 				}
 			}
 			if (Data->AdditionalInput == EAdditionalHelperInput::None)
 			{
-				ToReturn = Data->RollDirection;
+				ToReturn = Data->RollTag;
 			}
 		
 		}
 	}
 	return ToReturn;
+}
+
+
+EDirection UGSBlueprintFunctionLibrary::ConvertDirectionTagToDirection(FGameplayTag Tag)
+{
+	FGameplayTag ForwardTag = FGameplayTag::RequestGameplayTag("Action.Roll.Forward");
+	FGameplayTag BackwardTag = FGameplayTag::RequestGameplayTag("Action.Roll.Backward");
+	FGameplayTag LeftTag = FGameplayTag::RequestGameplayTag("Action.Roll.Left");
+	FGameplayTag RightTag = FGameplayTag::RequestGameplayTag("Action.Roll.Right");
+	FGameplayTag ForwardRightTag = FGameplayTag::RequestGameplayTag("Action.Roll.ForwardRight");
+	FGameplayTag BackwardRightTag = FGameplayTag::RequestGameplayTag("Action.Roll.BackwardRight");
+	FGameplayTag ForwardLeftTag = FGameplayTag::RequestGameplayTag("Action.Roll.ForwardLeft");
+	FGameplayTag BackwardLeftTag = FGameplayTag::RequestGameplayTag("Action.Roll.BackwardLeft");
+
+	if (Tag.MatchesTag(ForwardTag))
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("UGSBlueprintFunctionLibrary::ConvertDirectionTagToDirection, Matchforward"));
+		return EDirection::ED_Forward;
+	}
+	else if (Tag.MatchesTag(BackwardTag))
+	{
+		return EDirection::ED_Backward;
+	}
+	else if (Tag.MatchesTag(LeftTag))
+	{
+		return EDirection::ED_Left;
+	}
+	else if (Tag.MatchesTag(RightTag))
+	{
+		return EDirection::ED_Right;
+	}
+	else if (Tag.MatchesTag(ForwardRightTag))
+	{
+		return EDirection::ED_ForwardRight;
+	}
+	else if (Tag.MatchesTag(BackwardRightTag))
+	{
+		return EDirection::ED_BackwardRight;
+	}
+	else if (Tag.MatchesTag(ForwardLeftTag))
+	{
+		return EDirection::ED_ForwardLeft;
+	}
+
+	else if (Tag.MatchesTag(BackwardLeftTag))
+	{
+		return EDirection::ED_BackwardLeft;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("UGSBlueprintFunctionLibrary::ConvertDirectionTagToDirection, NoMatch"));
+	return EDirection::ED_None;
 }
 
 float UGSBlueprintFunctionLibrary::AdditionalYawToRotateToFaceLocation(AActor* ActorToRotate, FVector LocToFace, bool bAllPositive)

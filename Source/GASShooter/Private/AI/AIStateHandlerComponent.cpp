@@ -40,17 +40,23 @@ void UAIStateHandlerComponent::ConstructStates()
 		{
 			for (auto StateInfo : StateTableInfo.StateMap)
 			{
-				auto CreatedObj=NewObject<UAIBaseState>(GetOwner(), StateInfo.Value);
-				if (CreatedObj)
+				if (StateInfo.Value.Get())
 				{
-					UE_LOG(LogTemp, Warning, TEXT("UAIStateHandlerComponent::ConstructStates:%s"), *CreatedObj->GetName());
-					UUAIIdleState* IdleState = Cast< UUAIIdleState>(CreatedObj);
-					CreatedObj->Setup(this);
-					StateMapCollection.Add(StateInfo.Key, CreatedObj);
-					//CreatedObj->Setup(this);
-				
+					auto CreatedObj = NewObject<UAIBaseState>(GetOwner(), StateInfo.Value);
+					if (CreatedObj)
+					{
+						UE_LOG(LogTemp, Warning, TEXT("UAIStateHandlerComponent::ConstructStates:%s"), *CreatedObj->GetName());
+						UUAIIdleState* IdleState = Cast< UUAIIdleState>(CreatedObj);
+						CreatedObj->Setup(this);
+						StateMapCollection.Add(StateInfo.Key, CreatedObj);
+						//CreatedObj->Setup(this);
+
+					}
 				}
-			
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("UAIStateHandlerComponent::ConstructStates fail!"));
+				}
 			}
 		}
 	});
@@ -59,9 +65,13 @@ void UAIStateHandlerComponent::ConstructStates()
 
 void UAIStateHandlerComponent::DestroyAllStates()
 {
+	UE_LOG(LogTemp, Warning, TEXT("UAIStateHandlerComponent::DestroyAllStates"));
 	for (auto StateInfo : StateMapCollection)
 	{
+		StateInfo.Value->SetbPendingKill(true);
 		StateInfo.Value->ConditionalBeginDestroy();
+
+		
 	}
 }
 
@@ -96,6 +106,7 @@ void UAIStateHandlerComponent::TransitionState(EAIState NewState)
 		UE_LOG(LogTemp, Warning, TEXT(" UAIStateHandlerComponent::TransitionState no state:%i"), NewState);
 		return; 
 	}
+
 	if (CurrentBaseState)
 	{
 		CurrentBaseState->OnExitState();
@@ -104,12 +115,31 @@ void UAIStateHandlerComponent::TransitionState(EAIState NewState)
 	if (CurrentBaseState)
 	{
 		CurrentBaseState->OnEnterState();
+		OnEnableListener(CurrentBaseState->ListenerState);
 		ChangeStateDelegate.Broadcast(NewState);
 	}
 	else
 	{
 
 		UE_LOG(LogTemp, Warning, TEXT(" UAIStateHandlerComponent::TransitionState no base state"));
+	}
+}
+
+
+void UAIStateHandlerComponent::OnEnableListener(TArray<EAIState>ToEnable)
+{
+	UE_LOG(LogTemp, Warning, TEXT(" UAIStateHandlerComponent::OnEnableListener:%i"),ToEnable.Num());
+	for (auto State : ToEnable)
+	{
+		if (StateMapCollection.Contains(State))
+		{
+			UE_LOG(LogTemp, Warning, TEXT(" UAIStateHandlerComponent::OnEnableListener:%s"), *StateMapCollection[State]->GetName());
+			StateMapCollection[State]->OnStartListen();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT(" UAIStateHandlerComponent::OnEnableListener, no state"));
+		}
 	}
 }
 

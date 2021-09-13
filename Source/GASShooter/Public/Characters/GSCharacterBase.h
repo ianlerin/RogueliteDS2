@@ -249,5 +249,5 @@ public:
 	}
 	 // Reference to the AttributeSetBase. It will live on the PlayerState or here if the character doesn't have a PlayerState.
 	 UPROPERTY()
-	 class UGSAttributeSetBase* AttributeSetBase;
+	class UGSAttributeSetBase* AttributeSetBase = nullptr;
 };

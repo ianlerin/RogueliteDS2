@@ -187,3 +187,11 @@ enum class EElementalType : uint8
 	Ice,
 	Lightning
 };
+
+
+UENUM(BlueprintType)
+enum class EAbilityType :uint8
+{
+	None,
+	Attack
+};

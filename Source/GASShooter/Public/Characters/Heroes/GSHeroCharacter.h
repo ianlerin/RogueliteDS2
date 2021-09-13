@@ -297,6 +297,7 @@ protected:
 	FGameplayTag WeaponAbilityTag;
 	FGameplayTag KnockedDownTag;
 	FGameplayTag InteractingTag;
+	FGameplayTag RollTag;
 	UPROPERTY()
 	TMap<EWeaponEquipSlot, AGSWeapon*> WeaponEquipMap;
 	// Attribute changed delegate handles
@@ -354,7 +355,6 @@ protected:
 
 	// Sets the perspective
 	void SetPerspective(bool Is1PPerspective);
-
 	// Creates and initializes the floating status bar for heroes.
 	// Safe to call many times because it checks to make sure it only executes once.
 	UFUNCTION()

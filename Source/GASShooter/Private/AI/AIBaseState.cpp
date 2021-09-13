@@ -22,6 +22,7 @@ void UAIBaseState::OnEnterState()
 		{
 			CharBase->OnCharacterPreDied.RemoveAll(this);
 			CharBase->OnCharacterPreDied.AddUniqueDynamic(this, &UAIBaseState::OnDeath);
+			CharBase->OnDestroyed.AddUniqueDynamic(this, &UAIBaseState::OnDestroyed);
 		}
 	}
 	else
@@ -161,6 +162,7 @@ void UAIBaseState::Setup(UAIStateHandlerComponent* MyHandlerToSet)
 void UAIBaseState::TransitionState(EAIState NewState)
 {
 	if (!MyHandler) { return; }
+	if (bPendingKill) { return; }
 	MyHandler->TransitionState(NewState);
 }
 
@@ -182,6 +184,13 @@ bool UAIBaseState::bCheckValidAttackCondition()
 }
 
 void UAIBaseState::OnDeath(AGSCharacterBase* Died)
+{
+	UE_LOG(LogTemp, Warning, TEXT("UAIBaseState::OnDeath"));
+	if (!MyHandler) { return; }
+	MyHandler->TransitionState(EAIState::EAS_Death);
+}
+
+void UAIBaseState::OnDestroyed(AActor* Destroyed)
 {
 	UE_LOG(LogTemp, Warning, TEXT("UAIBaseState::OnDeath"));
 	if (!MyHandler) { return; }
@@ -218,6 +227,19 @@ bool UAIBaseState::GetIsOnTimer()
 }
 
 void UAIBaseState::OnStaminaChange(FGameplayAttribute Attribute, float NewValue, float OldValue)
+{
+
+}
+
+void UAIBaseState::OnStartListen()
+{
+	if (MyGSController)
+	{
+		CharBase = Cast<AGSCharacterBase>(MyGSController->GetPawn());
+	}
+}
+
+void UAIBaseState::OnStopListen()
 {
 
 }

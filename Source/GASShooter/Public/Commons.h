@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Runtime/Engine/Classes/Engine/DataTable.h"
 #include "GASShooter/GASShooter.h"
+#include "Runtime/GameplayTags/Classes/GameplayTagContainer.h"
 #include "Runtime/PhysicsCore/Public/PhysicalMaterials/PhysicalMaterial.h"
 #include "UObject/NoExportTypes.h"
 #include "Commons.generated.h"
@@ -35,6 +36,10 @@ struct FRollTable :public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	EDirection RollDirection;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FGameplayTag RollTag;
+
 };
 
 USTRUCT(BlueprintType)
@@ -44,6 +49,11 @@ struct FApplyEffectData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<UGameplayEffect> EffectClass;
+
+	// 0 means infinite
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float EffectDurationMagnitude = 0.5;
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	bool bBlockable;

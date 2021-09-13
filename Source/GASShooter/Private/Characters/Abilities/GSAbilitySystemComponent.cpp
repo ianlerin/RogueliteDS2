@@ -7,6 +7,7 @@
 #include "Runtime/Engine/Classes/GameFramework/PawnMovementComponent.h"
 #include "Runtime/Engine/Classes/GameFramework/PlayerState.h"
 #include "Characters/Abilities/GSGameplayAbility.h"
+#include "Characters/Heroes/GSHeroCharacter.h"
 #include "Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 #include "GameplayCueManager.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
@@ -193,7 +194,11 @@ void UGSAbilitySystemComponent::AbilityLocalInputPressed(int32 InputID)
 		for (int i = 0; i < MatchingSpecs.Num(); i++)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("UGSAbilitySystemComponent::AbilityLocalInputPressed, cant found perfect activate:%s"),*MatchingSpecs[i].Ability->GetName());
-			TryActivateAbility(MatchingSpecs[i].Handle);
+			bool bSuccess=TryActivateAbility(MatchingSpecs[i].Handle);
+			if (bSuccess)
+			{
+				AbilityActivatedDelegate.Broadcast(MatchingSpecs[i].Handle);
+			}
 		}
 	}
 }
