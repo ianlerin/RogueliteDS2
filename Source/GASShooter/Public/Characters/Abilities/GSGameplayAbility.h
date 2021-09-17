@@ -251,5 +251,7 @@ public:
 	void ExecuteNextCombo(EGSAbilityInputID Input);
 
 	UPROPERTY(EditDefaultsOnly)
+	EAbilityType Type;
+	UPROPERTY(EditDefaultsOnly)
 	TMap< EResourceType, float> ResourceRestriction;
 };

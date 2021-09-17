@@ -24,7 +24,12 @@ FRotator AGSPlayerController::GetControlRotation() const
 	if (FocusActor)
 	{
 		//UE_LOG(LogTemp,Warning,TEXT("AGSPlayerController::GetControlRotation, focused"))
-		return UKismetMathLibrary::FindLookAtRotation(GetPawn()->GetActorLocation(),FocusActor->GetActorLocation());
+		FRotator FoundRotation = UKismetMathLibrary::FindLookAtRotation(GetPawn()->GetActorLocation(), FocusActor->GetActorLocation());
+		float Roll = FoundRotation.Roll + AdditionalFocusRotation.Roll;
+		float Pitch = FoundRotation.Pitch + AdditionalFocusRotation.Pitch;
+		float Yaw = FoundRotation.Yaw + AdditionalFocusRotation.Yaw;
+		FRotator AdjustedRotation = FRotator(Pitch, Yaw, Roll);
+		return AdjustedRotation;
 	}
 	else
 	{

@@ -94,7 +94,7 @@ public:
 	static void CompareComboChain(TArray< FComboChainData> DTComboChain, TArray< EGSAbilityInputID>InputCollection, TArray<FComboChainData>&MatchingComboChain, TArray < FComboChainData>&FutureChainData);
 
 	UFUNCTION(BlueprintCallable)
-	static EDirection GetRollDirection(UDataTable* RollTable,EGSAbilityInputID PrimaryRollKey, AActor* AvatarActor);
+	static FGameplayTag GetRollDirection(UDataTable* RollTable,EGSAbilityInputID PrimaryRollKey, AActor* AvatarActor);
 
 	UFUNCTION(BlueprintCallable)
 	static EDirection ConvertRotationToDirection(FRotator Rot);
@@ -122,6 +122,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 		static FText GetFloatAsTextWithPrecision(float TheFloat, int32 Precision, bool IncludeLeadingZero);
 
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	static EDirection ConvertDirectionTagToDirection(FGameplayTag Tag);
 
 	UFUNCTION(BlueprintCallable, Category = "Calc")
 	static FVector GetVelocityToReachTarget(FVector Start, FVector End, FVector Acceleration, float T);

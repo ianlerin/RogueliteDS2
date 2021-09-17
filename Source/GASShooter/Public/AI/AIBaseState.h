@@ -46,14 +46,26 @@ protected:
 	class UAsyncTaskGameplayTagAddedRemoved* CastListenTask = nullptr;
 	UPROPERTY()
 	class UAsyncTaskAttributeChanged* AttributeChangeListener;
-
+	bool bPendingKill = false;
 	UPROPERTY(EditDefaultsOnly)
 	FGameplayAttribute StaminaAttribute;
 	//sometimes state need a cooldown for AI to check*should perhaps replace this with skill cooldown"
 	FTimerHandle StateCDHandle;
+	
 	bool bActive = false;
 public:
-
+	//sometimes a state might enable other states to begin listening to changes in the game environment and allow other states to override what is happening with the current state
+	UPROPERTY(EditDefaultsOnly)
+	TArray< EAIState>ListenerState;
+public:
+	void SetbPendingKill(bool bToSet)
+	{
+		bPendingKill = bToSet;
+	}
+	bool GetbPendingKill()
+	{
+		return bPendingKill;
+	}
 	virtual UAIBaseState* AttemptToTransition(EAIState NewState);
 	void Setup(UAIStateHandlerComponent* MyHandlerToSet);
 	virtual void OnEnterState();
@@ -70,7 +82,11 @@ public:
 	virtual void OnTagRemoved(FGameplayTag MyTag);
 	UFUNCTION()
 	virtual void OnDamageStackChange(FGameplayTag EffectGameplayTag, FActiveGameplayEffectHandle Handle, int32 NewStackCount, int32 OldStackCount);
+	virtual void OnStartListen();
+	virtual void OnStopListen();
 	bool GetIsOnTimer();
+	UFUNCTION()
+	void OnDestroyed(AActor* Destroyed);
 protected:
 	void TransitionState(EAIState NewState);
 	bool bCheckValidAttackCondition();
@@ -78,4 +94,5 @@ protected:
 	void OnDeath(AGSCharacterBase* Died);
 	UFUNCTION()
 	virtual void OnStaminaChange(FGameplayAttribute Attribute, float NewValue, float OldValue);
+
 };

@@ -14,7 +14,14 @@ class GASSHOOTER_API UAIRollState : public UAIBaseState
 {
 	GENERATED_BODY()
 	virtual void OnRollEnded(FGameplayTag MyTag) override;
-
+	virtual void OnStartListen()override;
+	virtual void OnStopListen()override;
 	virtual void OnEnterState() override;
 	virtual void OnExitState() override;
+	UFUNCTION()
+	void FocusedActorCast(FGameplayAbilitySpecHandle Handle);
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<UGameplayAbility>RollAbility;
+
 };

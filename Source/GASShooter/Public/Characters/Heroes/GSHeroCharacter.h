@@ -297,6 +297,7 @@ protected:
 	FGameplayTag WeaponAbilityTag;
 	FGameplayTag KnockedDownTag;
 	FGameplayTag InteractingTag;
+	FGameplayTag RollTag;
 	UPROPERTY()
 	TMap<EWeaponEquipSlot, AGSWeapon*> WeaponEquipMap;
 	// Attribute changed delegate handles

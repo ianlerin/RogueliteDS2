@@ -88,7 +88,8 @@ protected:
 
 	// Server only
 	virtual void OnPossess(APawn* InPawn) override;
-
+	UPROPERTY(EditDefaultsOnly)
+	FRotator AdditionalFocusRotation;
 	virtual void OnRep_PlayerState() override;
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UAIStateHandlerComponent* StateHandler = nullptr;

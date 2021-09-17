@@ -4,14 +4,16 @@
 #include "AI/AICaptainPreAttack.h"
 #include "Characters/GSCharacterBase.h"
 #include "GSBlueprintFunctionLibrary.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AI/GSHeroAIController.h"
+#include "Characters/Abilities/GSAbilitySystemComponent.h"
 #include "AI/AIStateHandlerComponent.h"
 
 void UAICaptainPreAttack::OnTransition()
 {
 	UE_LOG(LogTemp, Warning, TEXT(" UAICaptainPreAttack::OnTransition"));
 	if (!MyHandler) { return; }
-
+	return;
 	
 	if (CheckLeapCondition())
 	{
@@ -28,6 +30,7 @@ void UAICaptainPreAttack::OnTransition()
 	{
 		TransitionState(EAIState::EAS_Follow);
 	}
+	
 }
 
 bool UAICaptainPreAttack::CheckLeapCondition()
@@ -44,6 +47,7 @@ bool UAICaptainPreAttack::CheckLeapCondition()
 	bool bIsOnCD = MyHandler->CheckStateCD(EAIState::EAS_SlamDown);
 	return bLargerThanMinDistance && bIsHigherThanFocused && !bIsOnCD;
 }
+
 
 void UAICaptainPreAttack::OnLeapEnd()
 {
@@ -73,4 +77,5 @@ void UAICaptainPreAttack::OnExitState()
 	{
 		LeapInstance->OnAbilityEndedDelegate.RemoveAll(this);
 	}
+	
 }

@@ -90,6 +90,8 @@ AGSHeroCharacter::AGSHeroCharacter(const class FObjectInitializer& ObjectInitial
 	AIControllerClass = AGSHeroAIController::StaticClass();
 
 	// Cache tags
+
+	RollTag = FGameplayTag::RequestGameplayTag("Status.Roll");
 	KnockedDownTag = FGameplayTag::RequestGameplayTag("State.KnockedDown");
 	InteractingTag = FGameplayTag::RequestGameplayTag("State.Interacting");
 
@@ -865,6 +867,7 @@ void AGSHeroCharacter::AltKey()
 
 void AGSHeroCharacter::MoveForward(float Value)
 {
+	if (AbilitySystemComponent->HasMatchingGameplayTag(RollTag)) { return; }
 	if (bDisableInput) { return; }
 	if (IsAlive())
 	{
@@ -886,6 +889,7 @@ void AGSHeroCharacter::MoveForward(float Value)
 
 void AGSHeroCharacter::MoveRight(float Value)
 {
+	if (AbilitySystemComponent->HasMatchingGameplayTag(RollTag)) { return; }
 	if (bDisableInput) { return; }
 	if (IsAlive())
 	{
@@ -1371,11 +1375,12 @@ void AGSHeroCharacter::ClientSyncCurrentWeapon_Implementation(AGSWeapon* InWeapo
 bool AGSHeroCharacter::ClientSyncCurrentWeapon_Validate(AGSWeapon* InWeapon)
 {
 	return true;
-}
+}																								
 
 
 void AGSHeroCharacter::LaunchCharacterWithDirection(EDirection Direction,float Momentum)
 {
+	UE_LOG(LogTemp, Warning, TEXT("AGSHeroCharacter::LaunchCharacterWithDirection"));
 	FVector Vec = FVector(0);
 	switch (Direction)
 	{
@@ -1387,6 +1392,7 @@ void AGSHeroCharacter::LaunchCharacterWithDirection(EDirection Direction,float M
 		break;
 	case EDirection::ED_ForwardRight:
 		Vec = GetActorForwardVector() + GetActorRightVector();
+		//Vec = GetActorForwardVector();
 		break;
 	case EDirection::ED_Backward:
 		Vec = -GetActorForwardVector();
@@ -1404,7 +1410,7 @@ void AGSHeroCharacter::LaunchCharacterWithDirection(EDirection Direction,float M
 		Vec = GetActorRightVector();
 		break;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("AGSHeroCharacter::LaunchCharacterWithDirection, momentum:%s"),*(Vec*Momentum).ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("AGSHeroCharacter::LaunchCharacterWithDirection, momentum:%s"),*(Vec*Momentum).ToString());
 	LaunchCharacter(Vec*Momentum, false, false);
 }
 

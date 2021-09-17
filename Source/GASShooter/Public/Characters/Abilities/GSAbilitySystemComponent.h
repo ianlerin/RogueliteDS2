@@ -7,8 +7,9 @@
 #include "AbilitySystemComponent.h"
 #include "GSAbilitySystemComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityActivated, FGameplayAbilitySpecHandle, AbilityToActivate);
+ 
 class USkeletalMeshComponent;
-
 /**
 * Data about montages that were played locally (all montages in case of server. predictive montages in case of client). Never replicated directly.
 */
@@ -75,6 +76,7 @@ class GASSHOOTER_API UGSAbilitySystemComponent : public UAbilitySystemComponent
 public:
 	UGSAbilitySystemComponent();
 	
+	FAbilityActivated AbilityActivatedDelegate;
 	bool bCharacterAbilitiesGiven = false;
 	bool bStartupEffectsApplied = false;
 
